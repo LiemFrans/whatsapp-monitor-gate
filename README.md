@@ -17,6 +17,45 @@
 - `.env.example`: safe starter template for new installs.
 - `openclaw.plugin.json`: OpenClaw plugin metadata.
 
+## Install in OpenClaw
+
+This extension is meant to live inside your OpenClaw workspace extensions directory.
+
+1. Place the extension folder at `workspace/.openclaw/extensions/wa-monitor-gate`.
+2. Copy `.env.example` to `.env`.
+3. Replace all placeholder values in `.env` with your real WhatsApp group IDs, target numbers, mention IDs, bot name regex, and OpenClaw workspace path.
+4. Add `wa-monitor-gate` to `plugins.allow` in `openclaw.json`.
+5. Enable the plugin in `plugins.entries` in `openclaw.json`.
+6. Restart OpenClaw.
+
+Minimal `openclaw.json` example:
+
+```json
+{
+	"plugins": {
+		"allow": [
+			"wa-monitor-gate"
+		],
+		"entries": {
+			"wa-monitor-gate": {
+				"enabled": true
+			}
+		}
+	}
+}
+```
+
+The plugin metadata lives in `openclaw.plugin.json` and activates on the OpenClaw `hook` capability.
+
+## WhatsApp Routing Notes
+
+This extension only gates replies after messages have already been routed into the agent pipeline.
+
+- Put your monitored group IDs in `.env` under `FALLBACK_MONITORED_GROUPS`.
+- Keep those groups routable in `channels.whatsapp.groups`.
+- If you want every message in a monitored group to reach the agent and let this extension decide whether to suppress replies, set those group policies to `requireMention: false`.
+- Leave the wildcard `*` policy stricter if you do not want all other groups routed the same way.
+
 ## Required Environment Variables
 
 The extension no longer falls back to hardcoded defaults. If any required setting is missing or invalid, the extension logs a warning and does not register its hooks.
