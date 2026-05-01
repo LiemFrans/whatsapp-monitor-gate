@@ -1,0 +1,14 @@
+{
+  "id": "wa-monitor-gate",
+  "name": "WhatsApp Monitor Gate",
+  "description": "Suppress visible replies in monitored WhatsApp groups unless Cici or the monitored number is mentioned.",
+  "enabledByDefault": false,
+  "activation": {
+    "onCapabilities": ["hook"]
+  },
+  "configSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {}
+  }
+}
