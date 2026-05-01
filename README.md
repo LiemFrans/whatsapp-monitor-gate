@@ -10,6 +10,33 @@
 - Logs suppressed messages into `workspace/memory/wa-monitor/YYYY-MM-DD.jsonl`.
 - Appends structured suppressed-message context into the corresponding session transcript so later explicit mentions can recall prior no-reply messages.
 
+## Flow Diagram
+
+The diagram below shows both the startup validation path and the runtime gating path:
+
+```mermaid
+flowchart TD
+	A[OpenClaw starts] --> B[Load wa-monitor-gate]
+	B --> C{Is .env present and valid?}
+	C -- No --> D[Log warning and skip hook registration]
+	C -- Yes --> E[Register message_received and before_agent_reply hooks]
+
+	E --> F[Inbound WhatsApp message arrives]
+	F --> G{Monitored group?}
+	G -- No --> H[Ignore and let normal flow continue]
+	G -- Yes --> I[message_received caches recent inbound message]
+
+	I --> J[OpenClaw reaches before_agent_reply]
+	J --> K[Extract authored user text and metadata blocks]
+	K --> L{Explicit mention detected?}
+	L -- Yes --> M[Allow normal agent reply]
+	L -- No --> N[Write suppressed message to daily wa-monitor JSONL log]
+	N --> O[Append silent context entry to session transcript]
+	O --> P[Return exact NO_REPLY]
+```
+
+In practice, the explicit mention check only looks at the authored user text plus WhatsApp mention metadata, so sender labels and metadata wrappers do not accidentally trigger a visible reply.
+
 ## Required Files
 
 - `index.mjs`: main plugin implementation.
