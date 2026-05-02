@@ -1,4 +1,4 @@
-# WhatsApp Monitor Gate
+# Openclaw WhatsApp Monitor Gate
 
 `wa-monitor-gate` is an OpenClaw hook extension that suppresses visible replies in selected WhatsApp groups unless an explicit mention rule passes.
 
@@ -47,6 +47,26 @@ In practice, the explicit mention check only looks at the authored user text plu
 ## Install in OpenClaw
 
 This extension is meant to live inside your OpenClaw workspace extensions directory.
+
+### Option A: Ask your OpenClaw agent
+
+If your OpenClaw agent can edit files and run commands in your workspace, you can install this extension directly from chat.
+
+In your OpenClaw chat or TUI, say:
+
+> Install wa-monitor-gate from https://github.com/LiemFrans/whatsapp-monitor-gate into `workspace/.openclaw/extensions/wa-monitor-gate`. Copy `.env.example` to `.env`, ask me for the real values before finishing `.env`, add `wa-monitor-gate` to `plugins.allow`, enable it in `plugins.entries`, and restart OpenClaw.
+
+Expected result:
+
+- The extension files are placed under `workspace/.openclaw/extensions/wa-monitor-gate`.
+- `.env.example` is copied to `.env`.
+- The agent pauses for any real values that cannot be guessed safely.
+- `openclaw.json` is updated so the plugin is allowed and enabled.
+- OpenClaw is restarted so the plugin can load.
+
+If the agent cannot clone the GitHub repository directly, ask it to create the same files manually in `workspace/.openclaw/extensions/wa-monitor-gate` and continue with the same setup steps.
+
+### Option B: Manual install
 
 1. Place the extension folder at `workspace/.openclaw/extensions/wa-monitor-gate`.
 2. Copy `.env.example` to `.env`.
